@@ -7,12 +7,21 @@
 
 import Foundation
 
-struct Reminder: Identifiable {
+struct Reminder: Equatable, Identifiable {
     var id: String = UUID().uuidString
     var title: String
     var dueDate: Date
     var notes: String? = nil
     var isComplete: Bool = false
+}
+
+extension [Reminder] {
+    func indexOfReminder(withId id: Reminder.ID) -> Self.Index {
+        guard let index = firstIndex(where: { $0.id == id }) else {
+            fatalError()
+        }
+        return index
+    }
 }
 
 #if DEBUG
@@ -31,8 +40,8 @@ extension Reminder {
             title: "Add notes to retrospective", dueDate: Date().addingTimeInterval(3200.0),
             notes: "Collaborate with project manager", isComplete: true),
         Reminder(
-            title: "Interview new project manager candidate", dueDate: Date().addingTimeInterval(60000.0),
-            notes: "Review portfolio"),
+            title: "Interview new project manager candidate",
+            dueDate: Date().addingTimeInterval(60000.0), notes: "Review portfolio"),
         Reminder(
             title: "Mock up onboarding experience", dueDate: Date().addingTimeInterval(72000.0),
             notes: "Think different"),
