@@ -1,5 +1,5 @@
 # Today
-Today is a productivity app for iOS with daily reminders. Today's goal is not only to help users focus on their daily tasks, but also to use visual design and animation to create a subdued, calm interface.
+Today is a productivity app for iOS with daily reminders from Apple. Today's goal is not only to help users focus on their daily tasks, but also to use visual design and animation to create a subdued, calm interface.
 
 Reminder List
 A list of user reminders appeared on the main screen of the application. 
