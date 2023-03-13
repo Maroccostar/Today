@@ -18,8 +18,8 @@ final class ReminderStore {
     }
     
     func requestAccess() async throws {
-        let status = EKEventStore.authorizationStatus(for: .reminder)
-        switch status {
+        //let status = EKEventStore.authorizationStatus(for: .reminder)
+        switch EKEventStore.authorizationStatus(for: .reminder) {
         case .authorized:
             return
         case .restricted:
@@ -43,14 +43,19 @@ final class ReminderStore {
         
         let predicate = ekStore.predicateForReminders(in: nil)
         let ekReminders = try await ekStore.reminders(matching: predicate)
-        let reminders: [Reminder] = try ekReminders.compactMap { ekReminder in
-            do {
-                return try Reminder(with: ekReminder)
-            } catch TodayError.reminderHasNoDueDate {
-                return nil
-            }
+        let reminders: [Reminder] = ekReminders.compactMap { ekReminder in
+            try? Reminder(with: ekReminder)
         }
-        return reminders
+        
+//        let reminders: [Reminder] = try ekReminders.compactMap { ekReminder in
+//            do {
+//                return try Reminder(with: ekReminder)
+//            } catch TodayError.reminderHasNoDueDate {
+//                return nil
+//            }
+//        }
+//     return reminders
+       return reminders
     }
     
     @discardableResult
@@ -59,11 +64,16 @@ final class ReminderStore {
             throw TodayError.accessDenied
         }
         let ekReminder: EKReminder
-        do {
-            ekReminder = try read(with: reminder.id)
-        } catch {
+        if let reminder = try? read(with: reminder.id) {
+            ekReminder = reminder
+        } else {
             ekReminder = EKReminder(eventStore: ekStore)
         }
+//        do {
+//            ekReminder = try read(with: reminder.id)
+//        } catch {
+//            ekReminder = EKReminder(eventStore: ekStore)
+//        }
         ekReminder.update(using: reminder, in: ekStore)
         try ekStore.save(ekReminder, commit: true)
         return ekReminder.calendarItemIdentifier

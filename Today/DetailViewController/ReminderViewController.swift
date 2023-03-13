@@ -38,8 +38,7 @@ class ReminderViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let cellRegistration = UICollectionView.CellRegistration(handler: cellRegistrationHandler)
-        dataSource = DataSource(collectionView: collectionView) {
-            (collectionView: UICollectionView, indexPath: IndexPath, itemIdentifier: Row) in
+        dataSource = DataSource(collectionView: collectionView) { (collectionView: UICollectionView, indexPath: IndexPath, itemIdentifier: Row) in
             return collectionView.dequeueConfiguredReusableCell(
                 using: cellRegistration, for: indexPath, item: itemIdentifier)
         }
@@ -92,8 +91,7 @@ class ReminderViewController: UICollectionViewController {
     }
     
     private func prepareForEditing() {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: .cancel, target: self, action: #selector(didCancelEdit))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(didCancelEdit))
         updateSnapshotForEditing()
     }
     

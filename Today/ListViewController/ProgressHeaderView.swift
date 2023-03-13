@@ -8,7 +8,9 @@
 import UIKit
 
 class ProgressHeaderView: UICollectionReusableView {
-    static var elementKind: String { UICollectionView.elementKindSectionHeader }
+    static var elementKind: String {
+        UICollectionView.elementKindSectionHeader
+    }
     
     var progress: CGFloat = 0 {
         didSet {

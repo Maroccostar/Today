@@ -17,9 +17,9 @@ class ReminderListViewController: UICollectionViewController {
         }
     }
     
-    let listStyleSegmentedControl = UISegmentedControl(items: [
-        ReminderListStyle.today.name, ReminderListStyle.future.name, ReminderListStyle.all.name
-    ]) 
+    let listStyleSegmentedControl = UISegmentedControl(items: [ReminderListStyle.today.name,
+                                                               ReminderListStyle.future.name,
+                                                               ReminderListStyle.all.name ])
     
     var headerView: ProgressHeaderView?
     var progress: CGFloat {
@@ -43,24 +43,20 @@ class ReminderListViewController: UICollectionViewController {
         
         dataSource = DataSource(collectionView: collectionView) {
             (collectionView: UICollectionView, indexPath: IndexPath, itemIdentifier: Reminder.ID) in
-            return collectionView.dequeueConfiguredReusableCell(
-                using: cellRegistration, for: indexPath, item: itemIdentifier)
+            return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: itemIdentifier)
         }
         
-        let headerRegistration = UICollectionView.SupplementaryRegistration(elementKind: ProgressHeaderView.elementKind, handler: supplementaryRegistrationHandler)
+        let headerRegistration = UICollectionView.SupplementaryRegistration(elementKind: ProgressHeaderView.elementKind,
+                                                                            handler: supplementaryRegistrationHandler)
         dataSource.supplementaryViewProvider = { supplementaryView, eleelementKindment, indexPath in
-            return self.collectionView.dequeueConfiguredReusableSupplementary(
-                using: headerRegistration, for: indexPath)
+            return self.collectionView.dequeueConfiguredReusableSupplementary(using: headerRegistration, for: indexPath)
         }
         
-        let addButton = UIBarButtonItem(
-            barButtonSystemItem: .add, target: self, action: #selector(didPressAddButton(_:)))
-        addButton.accessibilityLabel = NSLocalizedString(
-            "Add reminder", comment: "Add button accessibility label")
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didPressAddButton(_:)))
+        addButton.accessibilityLabel = NSLocalizedString("Add reminder", comment: "Add button accessibility label")
         navigationItem.rightBarButtonItem = addButton
         listStyleSegmentedControl.selectedSegmentIndex = listStyle.rawValue
-        listStyleSegmentedControl.addTarget(
-            self, action: #selector(didChangeListStyle(_:)), for: .valueChanged)
+        listStyleSegmentedControl.addTarget(self, action: #selector(didChangeListStyle(_:)), for: .valueChanged)
         navigationItem.titleView = listStyleSegmentedControl
         if #available(iOS 16, *) {
             navigationItem.style = .navigator
@@ -78,18 +74,16 @@ class ReminderListViewController: UICollectionViewController {
         refreshBackground()
     }
     
-    override func collectionView(
-        _ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath
-    ) -> Bool {
+    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         let id = filteredReminders[indexPath.item].id
         pushDetailViewForReminder(withId: id)
         return false
     }
     
-    override func collectionView(
-        _ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView,
-        forElementKind elementKind: String, at indexPath: IndexPath
-    ) {
+    override func collectionView(_ collectionView: UICollectionView,
+                                 willDisplaySupplementaryView view: UICollectionReusableView,
+                                 forElementKind elementKind: String,
+                                 at indexPath: IndexPath) {
         guard elementKind == ProgressHeaderView.elementKind,
               let progressView = view as? ProgressHeaderView
         else {
@@ -117,13 +111,9 @@ class ReminderListViewController: UICollectionViewController {
     
     func showError(_ error: Error) {
         let alertTitle = NSLocalizedString("Error", comment: "Error alert title")
-        let alert = UIAlertController(
-            title: alertTitle, message: error.localizedDescription, preferredStyle: .alert)
+        let alert = UIAlertController(title: alertTitle, message: error.localizedDescription, preferredStyle: .alert)
         let actionTitle = NSLocalizedString("OK", comment: "Alert OK button title")
-        alert.addAction(
-            UIAlertAction(
-                title: actionTitle, style: .default,
-            handler: { [weak self ] _ in
+        alert.addAction(UIAlertAction(title: actionTitle, style: .default, handler: { [weak self ] _ in
                 self?.dismiss(animated: true)
             }))
         present(alert, animated: true, completion: nil)
@@ -153,8 +143,7 @@ class ReminderListViewController: UICollectionViewController {
     }
     
     private func supplementaryRegistrationHandler(
-        progressView: ProgressHeaderView, elementKind: String, indexPath: IndexPath
-    ) {
+        progressView: ProgressHeaderView, elementKind: String, indexPath: IndexPath) {
         headerView = progressView
     }
 }

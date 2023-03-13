@@ -36,8 +36,7 @@ extension ReminderListViewController {
         var contentConfiguration = cell.defaultContentConfiguration()
         contentConfiguration.text = reminder.title
         contentConfiguration.secondaryText = reminder.dueDate.dayAndTimeText
-        contentConfiguration.secondaryTextProperties.font = UIFont.preferredFont(
-            forTextStyle: .caption1)
+        contentConfiguration.secondaryTextProperties.font = UIFont.preferredFont(forTextStyle: .caption1)
         cell.contentConfiguration = contentConfiguration
         
         var doneButtonConfiguration = doneButtonConfiguration(for: reminder)
@@ -45,9 +44,7 @@ extension ReminderListViewController {
         cell.accessibilityCustomActions = [doneButtonAccessibilityAction(for: reminder)]
         cell.accessibilityValue =
         reminder.isComplete ? reminderCompletedValue : reminderNotCompletedValue
-        cell.accessories = [
-            .customView(configuration: doneButtonConfiguration), .disclosureIndicator(displayed: .always)
-        ]
+        cell.accessories = [.customView(configuration: doneButtonConfiguration), .disclosureIndicator(displayed: .always)]
         
         var backgroundConfiguration = UIBackgroundConfiguration.listGroupedCell()
         backgroundConfiguration.backgroundColor = .todayListCellBackground
@@ -126,8 +123,7 @@ extension ReminderListViewController {
     }
 
     private func doneButtonAccessibilityAction(for reminder: Reminder) -> UIAccessibilityCustomAction {
-        let name = NSLocalizedString(
-            "Toggle completion", comment: "Reminder done button accessibility label")
+        let name = NSLocalizedString("Toggle completion", comment: "Reminder done button accessibility label")
         let action = UIAccessibilityCustomAction(name: name) { [weak self] action in
             self?.completeReminder(withId: reminder.id)
             return true
@@ -144,7 +140,6 @@ extension ReminderListViewController {
         button.addTarget(self, action: #selector(didPressDoneButton(_:)), for: .touchUpInside)
         button.id = reminder.id
         button.setImage(image, for: .normal)
-        return UICellAccessory.CustomViewConfiguration(
-            customView: button, placement: .leading(displayed: .always))
+        return UICellAccessory.CustomViewConfiguration(customView: button, placement: .leading(displayed: .always))
     }
 }
